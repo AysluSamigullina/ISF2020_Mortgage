@@ -2,6 +2,7 @@ package ru.isf.mortgage.service;
 
 import ru.isf.mortgage.entity.Request;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface RequestService {
@@ -9,5 +10,6 @@ public interface RequestService {
     void updateRequest(Request request);
     Request readRequest(UUID id);
     void  deleteRequest(Request request);
-    void showRequests();
+    boolean checkRequest(Request request);
+    List<Request> showRequests();
 }

@@ -17,6 +17,14 @@ public class Request {
         this.status = Status.NEW;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public LocalDate getDate() {
         return date;
     }

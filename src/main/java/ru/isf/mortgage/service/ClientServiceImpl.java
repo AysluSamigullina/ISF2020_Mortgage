@@ -3,6 +3,8 @@ package ru.isf.mortgage.service;
 import ru.isf.mortgage.entity.Client;
 import ru.isf.mortgage.repo.ClientDao;
 
+import java.util.List;
+
 public class ClientServiceImpl implements ClientService{
 
     private ClientDao clientDao;
@@ -16,8 +18,8 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public void showClients() {
-        clientDao.show();
+    public List<Client> showClients() {
+        return clientDao.show();
     }
 
 }

@@ -6,6 +6,7 @@ import ru.isf.mortgage.service.RequestService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class Main {
@@ -32,14 +33,25 @@ public class Main {
         Request request2 = new Request();
         request2.setClient(client2);
         request2.setDate(LocalDate.now());
-        request2.setSum(BigDecimal.valueOf(6000000));
+        request2.setSum(BigDecimal.valueOf(60000000));
         request2.setTerm(360);
 
         requestService.addRequest(request1);
         requestService.addRequest(request2);
 
-        requestService.showRequests();
-        clientService.showClients();
+        requestService.updateRequest(request1);
+        requestService.updateRequest(request2);
+
+        System.out.println(requestService.readRequest(request1.getId()));
+
+        requestService.checkRequest(request1);
+        requestService.checkRequest(request2);
+
+        requestService.deleteRequest(request2);
+
+        List<Request> requests = requestService.showRequests();
+        List<Client> clients = clientService.showClients();
+
         context.close();
     }
 }

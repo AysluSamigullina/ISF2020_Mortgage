@@ -18,7 +18,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void show() {
-        clientList.stream().forEach(s -> System.out.println(s));
+    public List<Client> show() {
+        return clientList;
     }
 }
