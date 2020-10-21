@@ -1,5 +1,6 @@
 package ru.isf.mortgage.repo;
 
+import org.springframework.stereotype.Repository;
 import ru.isf.mortgage.entity.Request;
 import ru.isf.mortgage.entity.Status;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Repository
 public class RequestDaoImpl implements RequestDao{
     private List<Request> requestList = new ArrayList<>();
 

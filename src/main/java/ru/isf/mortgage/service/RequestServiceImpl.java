@@ -1,5 +1,7 @@
 package ru.isf.mortgage.service;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import ru.isf.mortgage.entity.Request;
 import ru.isf.mortgage.entity.Status;
 import ru.isf.mortgage.repo.RequestDao;
@@ -8,12 +10,14 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+@Service
+@Scope("prototype")
 public class RequestServiceImpl implements RequestService {
     private RequestDao requestDao;
 
     public RequestServiceImpl(RequestDao requestDao) {
-        this.requestDao = requestDao;
     }
+
     @Override
     public void addRequest(Request request) {
         requestDao.add(request);

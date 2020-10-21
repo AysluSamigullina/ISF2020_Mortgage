@@ -1,3 +1,6 @@
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.isf.mortgage.config.SpringConfig;
 import ru.isf.mortgage.entity.Client;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.isf.mortgage.entity.Request;
@@ -11,7 +14,9 @@ import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+    //    ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 
         ClientService clientService = (ClientService) context.getBean("clientService");
         RequestService requestService = (RequestService) context.getBean("requestService");
@@ -52,6 +57,5 @@ public class Main {
         List<Request> requests = requestService.showRequests();
         List<Client> clients = clientService.showClients();
 
-        context.close();
     }
 }
