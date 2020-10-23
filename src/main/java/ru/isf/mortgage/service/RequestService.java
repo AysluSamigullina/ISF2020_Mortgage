@@ -5,6 +5,9 @@ import ru.isf.mortgage.entity.Request;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Сервис для работы с заявками
+ */
 public interface RequestService {
     void addRequest(Request request);
     void updateRequest(Request request);

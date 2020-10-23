@@ -14,12 +14,11 @@ import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
-    //    ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 
-        ClientService clientService = (ClientService) context.getBean("clientService");
-        RequestService requestService = (RequestService) context.getBean("requestService");
+        ClientService clientService = (ClientService) context.getBean("clientServiceImpl");
+        RequestService requestService = (RequestService) context.getBean("requestServiceImpl");
 
         Client client1 = new Client();
         client1.setFullName("Иванов Иван Иванович");

@@ -2,6 +2,9 @@ package ru.isf.mortgage.entity;
 
 import java.util.UUID;
 
+/** Client
+ *
+ */
 public class Client {
     private UUID id;
     private String fullName;
