@@ -9,7 +9,21 @@ import java.util.List;
  * Существуют методы для добавления клиента, удаления клиента и вывода списка клиентов
  */
 public interface ClientDao {
+    /**
+     * Добавляет клиента в список
+     * @param client
+     */
     void add(Client client);
+
+    /**
+     * Удаляет клиента из списка
+     * @param client
+     */
     void delete(Client client);
+
+    /**
+     * Выводит список клиентов
+     * @return
+     */
     List<Client> show();
 }

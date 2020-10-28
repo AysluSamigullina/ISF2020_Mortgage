@@ -4,12 +4,38 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Сущность Заявка на ипотеку. Клиент заполняет параметры заявки и отправляет на рассмотрение
+ */
 public class Request {
+    /**
+     * id заявки
+     */
     private UUID id;
+
+    /**
+     * Дата заявки
+     */
     private LocalDate date;
+
+    /**
+     * Сумма заявки
+     */
     private BigDecimal sum;
+
+    /**
+     * Количество месяцев, на которое запрашивается ипотека
+     */
     private int term;
+
+    /**
+     * Клиент, подающий заявку
+     */
     private Client client;
+
+    /**
+     * Статус заявки
+     */
     private Status status;
 
     public Request() {

@@ -2,6 +2,7 @@ package ru.isf.mortgage.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Scope("prototype")
 @PropertySource(value = {"classpath:application.properties"})
 public class RequestServiceImpl implements RequestService {
 
@@ -24,6 +24,7 @@ public class RequestServiceImpl implements RequestService {
     private String maxTerm;
 
     public RequestServiceImpl(RequestDao requestDao) {
+        this.requestDao = requestDao;
     }
 
     /**

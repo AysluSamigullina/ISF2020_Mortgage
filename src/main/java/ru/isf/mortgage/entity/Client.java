@@ -2,11 +2,18 @@ package ru.isf.mortgage.entity;
 
 import java.util.UUID;
 
-/** Client
- *
+/**
+ * Сущность Client. Он будет подавать заявку на ипотеку
  */
 public class Client {
+    /**
+     * id Клиента
+     */
     private UUID id;
+
+    /**
+     * ФИО клиента
+     */
     private String fullName;
 
     public Client() {
