@@ -1,5 +1,12 @@
 package ru.isf.mortgage.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import ru.isf.mortgage.entity.Request;
 import ru.isf.mortgage.entity.Status;
 import ru.isf.mortgage.repo.RequestDao;
@@ -8,26 +15,36 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+@Service
+@PropertySource(value = {"classpath:application.properties"})
 public class RequestServiceImpl implements RequestService {
+
     private RequestDao requestDao;
+    @Value("${request.maxTerm}")
+    private String maxTerm;
 
     public RequestServiceImpl(RequestDao requestDao) {
         this.requestDao = requestDao;
     }
+
+    /**
+     * Добавляет заявку в список
+     * @param request
+     */
     @Override
     public void addRequest(Request request) {
         requestDao.add(request);
     }
 
     /**
-     * примитивная проверка заявки на заявленную сумму, чтобы одобрить заявку или отказать
+     * примитивная проверка заявки на запрошенный срок, чтобы одобрить заявку или отказать
      * @param request
      * @return
      */
     @Override
     public boolean checkRequest(Request request) {
         if (request.getStatus().equals(Status.ON_WORK)) {
-            if (request.getSum().compareTo(BigDecimal.valueOf(10000000L)) < 0) {
+            if (request.getTerm() < Integer.valueOf(maxTerm)) {
                 updateRequest(request, true);
                 return true;
             } else {
@@ -38,6 +55,10 @@ public class RequestServiceImpl implements RequestService {
             return false;
     }
 
+    /**
+     * Первое обновление заявки до статуса "В работе"
+     * @param request
+     */
     @Override
     public void updateRequest(Request request) {
         requestDao.update(request);
@@ -52,18 +73,37 @@ public class RequestServiceImpl implements RequestService {
         requestDao.checkAndUpdate(request, bool);
     }
 
+    /**
+     * Возврашает заявку по id
+     * @param id
+     * @return
+     */
     @Override
     public Request readRequest(UUID id) {
         return requestDao.get(id);
     }
 
+    /**
+     * Удаляет заявку из списка
+     * @param request
+     */
     @Override
     public void deleteRequest(Request request) {
         requestDao.delete(request);
     }
 
+    /**
+     * Выводит список заявок
+     * @return
+     */
     @Override
     public List<Request> showRequests() {
         return requestDao.show();
+    }
+
+    @Autowired
+    @Lazy
+    public void setRequestDao(RequestDao requestDao) {
+        this.requestDao = requestDao;
     }
 }
