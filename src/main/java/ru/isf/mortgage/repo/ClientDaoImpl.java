@@ -5,6 +5,7 @@ import ru.isf.mortgage.entity.Client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Реализация интерфейса ClientDao
@@ -38,5 +39,20 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public List<Client> show() {
         return clientList;
+    }
+
+    /**
+     * Возвращает клиента по полному фио
+     * @param fullname
+     * @return
+     */
+    @Override
+    public Client getClient(String fullname) {
+        for (Client client : clientList) {
+            if (client.getFullName().equals(fullname)) {
+                return client;
+            }
+        }
+        return null;
     }
 }

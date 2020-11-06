@@ -6,7 +6,9 @@ import ru.isf.mortgage.entity.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 public class RequestDaoImpl implements RequestDao{
@@ -54,16 +56,17 @@ public class RequestDaoImpl implements RequestDao{
      */
     @Override
     public Request get(UUID id) {
-        return requestList.stream().filter(req -> id.equals(req.getId())).findAny().orElse(null);
+        Optional<Request> request = requestList.stream().filter(req -> id.equals(req.getId())).findAny();
+        return request.get();
     }
 
     /**
      * Удаляет заявку из списка
-     * @param request
+     * @param id
      */
     @Override
-    public void delete(Request request) {
-        requestList.remove(request);
+    public void delete(UUID id) {
+        requestList.remove(get(id));
     }
 
     /**

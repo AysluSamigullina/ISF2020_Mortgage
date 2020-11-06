@@ -30,9 +30,9 @@ public interface RequestService {
 
     /**
      * Удаляет заявку из списка
-     * @param request
+     * @param id
      */
-    void  deleteRequest(Request request);
+    void  deleteRequest(UUID id);
 
     /**
      * Проверяет параметры заявки

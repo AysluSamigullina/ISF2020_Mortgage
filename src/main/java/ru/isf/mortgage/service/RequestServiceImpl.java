@@ -85,11 +85,11 @@ public class RequestServiceImpl implements RequestService {
 
     /**
      * Удаляет заявку из списка
-     * @param request
+     * @param id
      */
     @Override
-    public void deleteRequest(Request request) {
-        requestDao.delete(request);
+    public void deleteRequest(UUID id) {
+        requestDao.delete(id);
     }
 
     /**

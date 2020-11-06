@@ -37,9 +37,9 @@ public interface RequestDao {
 
     /**
      * Удаляет заявку из списка
-     * @param request
+     * @param id
      */
-    void delete(Request request);
+    void delete(UUID id);
 
     /**
      * Выводит список заявок

@@ -26,4 +26,11 @@ public interface ClientDao {
      * @return
      */
     List<Client> show();
+
+    /**
+     * Возвращает клиента по полному фио
+     * @param fullname
+     * @return
+     */
+    Client getClient(String fullname);
 }

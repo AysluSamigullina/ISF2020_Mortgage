@@ -43,6 +43,14 @@ public class Request {
         this.status = Status.NEW;
     }
 
+    public Request(BigDecimal sum, int term) {
+        this.id = UUID.randomUUID();
+        this.date = LocalDate.now();
+        this.sum = sum;
+        this.term = term;
+        this.status = Status.NEW;
+    }
+
     public UUID getId() {
         return id;
     }
