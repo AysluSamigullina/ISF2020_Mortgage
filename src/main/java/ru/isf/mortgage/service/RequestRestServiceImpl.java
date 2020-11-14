@@ -25,6 +25,7 @@ public class RequestRestServiceImpl implements RequestRestService {
     private ClientDao clientDao;
     private RequestDtoValidator requestDtoValidator;
 
+    public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao, RequestDtoValidator requestDtoValidator) {
     @Value("${request.maxTerm}")
     private String maxTerm;
 
@@ -57,6 +58,7 @@ public class RequestRestServiceImpl implements RequestRestService {
         requestDto.setId(request.getId());
         requestDto.setClientId(client.getId());
         requestDto.setStatus(request.getStatus().toString());
+        requestDto.setDate(request.getDate());
         return requestDto;
 
     }
