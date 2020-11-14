@@ -135,6 +135,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "addRequest with exception",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sum\" : \"2200000\",\n    \"term\": \"120\",\n    \"clientFullName\": \"ivanov\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/request/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"request",
+						"add"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
