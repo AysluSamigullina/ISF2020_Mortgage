@@ -2,13 +2,16 @@ package ru.isf.mortgage.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.isf.mortgage.controller.dto.RequestDto;
 import ru.isf.mortgage.entity.Request;
 import ru.isf.mortgage.service.RequestRestService;
 
+import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Рест контроллер для работы с заявками
@@ -20,7 +23,6 @@ public class  RequestController {
 
     private RequestRestService requestRestService;
 
-    @Autowired
     public RequestController(RequestRestService requestRestService) {
         this.requestRestService = requestRestService ;
     }
@@ -31,9 +33,10 @@ public class  RequestController {
      * @return
      */
     @PostMapping(value = "/add")
-    public RequestDto addRequest(@RequestBody RequestDto requestDto) {
-        requestRestService.addRequest(requestDto);
-        return requestDto;
+    public ResponseEntity<RequestDto>  addRequest(@RequestBody RequestDto requestDto, UriComponentsBuilder componentsBuilder) {
+        RequestDto req =  requestRestService.addRequest(requestDto);
+        URI uri = componentsBuilder.path("/api/request/" + req.getId()).buildAndExpand(req).toUri();
+        return ResponseEntity.created(uri).body(req);
     }
 
     /**
@@ -46,20 +49,29 @@ public class  RequestController {
     }
 
     /**
-     * Обновление статуса заявки
-     * @param requestDto
+     * Вывод заявки по id
+     * @param uuid
      * @return
      */
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public RequestDto updateRequest(@RequestBody RequestDto requestDto) {
-        return requestRestService.updateRequest(requestDto.getId());
+    @GetMapping(value = "/{id}")
+    public RequestDto showRequestById(@PathVariable("id") UUID uuid) {
+        return requestRestService.getRequest(uuid);
+    }
+    /**
+     * Обновление статуса заявки
+     * @param uuid
+     * @return
+     */
+    @PutMapping(value = "/update/{id}")
+    public RequestDto updateRequest(@PathVariable(value = "id") UUID uuid) {
+        return requestRestService.updateRequest(uuid);
     }
 
     /**
      *
      * @param requestDto
      */
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping()
     public void deleteRequest(@RequestBody RequestDto requestDto) {
         requestRestService.deleteRequest(requestDto.getId());
     }

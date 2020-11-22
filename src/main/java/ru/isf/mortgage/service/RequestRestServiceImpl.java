@@ -84,8 +84,9 @@ public class RequestRestServiceImpl implements RequestRestService {
      * @return
      */
     @Override
-    public Request getRequest(UUID id) {
-        return  requestDao.get(id);
+    public RequestDto getRequest(UUID id) {
+        Request req = requestDao.get(id);
+        return new RequestDto(req.getId(), req.getDate(), req.getSum(), req.getTerm(), req.getClient().getId(), req.getClient().getFullName(), req.getStatus());
     }
 
     /**

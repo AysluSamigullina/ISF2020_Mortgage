@@ -2,12 +2,14 @@ package ru.isf.mortgage.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.isf.mortgage.controller.dto.ClientDto;
 import ru.isf.mortgage.entity.Client;
 import ru.isf.mortgage.service.ClientRegistrationService;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -20,7 +22,6 @@ public class ClientController {
 
     private ClientRegistrationService clientRegistrationService;
 
-    @Autowired
     public ClientController(ClientRegistrationService clientRegistrationService) {
         this.clientRegistrationService = clientRegistrationService ;
     }
@@ -31,9 +32,10 @@ public class ClientController {
      * @return
      */
     @PostMapping(value = "/registration")
-    public ClientDto userRegistration(@RequestBody ClientDto clientDto) {
-        clientRegistrationService.regClient(clientDto);
-        return clientDto;
+    public ResponseEntity<ClientDto> userRegistration(@RequestBody ClientDto clientDto, UriComponentsBuilder componentsBuilder) {
+        ClientDto client = clientRegistrationService.regClient(clientDto);
+        URI uri = componentsBuilder.path("/api/client/" + client.getId()).buildAndExpand(client).toUri();
+        return ResponseEntity.created(uri).body(client);
     }
 
     /**

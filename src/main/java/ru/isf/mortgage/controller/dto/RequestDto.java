@@ -1,5 +1,7 @@
 package ru.isf.mortgage.controller.dto;
 
+import ru.isf.mortgage.entity.Status;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -38,6 +40,16 @@ public class RequestDto {
     private String status;
 
     public RequestDto() {}
+
+    public RequestDto(UUID id, LocalDate date, BigDecimal sum, int term, UUID id1, String fullName, Status status) {
+        this.id = id;
+        this.date = date;
+        this.sum = sum;
+        this.term = term;
+        this.clientId = clientId;
+        this.clientFullName = clientFullName;
+        this.status = status.toString();
+    }
 
     public String getStatus() {
         return status;

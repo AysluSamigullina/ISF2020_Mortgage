@@ -1,6 +1,5 @@
 package ru.isf.mortgage.service;
 
-import ru.isf.mortgage.controller.dto.ClientDto;
 import ru.isf.mortgage.controller.dto.RequestDto;
 import ru.isf.mortgage.entity.Request;
 
@@ -12,7 +11,7 @@ public interface RequestRestService {
 
     List<Request> showRequests();
 
-    Request getRequest(UUID id);
+    RequestDto getRequest(UUID id);
 
     String getRequestStatus(UUID id);
 
