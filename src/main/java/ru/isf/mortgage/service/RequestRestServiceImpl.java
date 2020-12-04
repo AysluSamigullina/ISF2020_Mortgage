@@ -2,6 +2,7 @@ package ru.isf.mortgage.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.isf.mortgage.controller.dto.RequestDto;
 import ru.isf.mortgage.entity.Client;
@@ -21,6 +22,9 @@ public class RequestRestServiceImpl implements RequestRestService {
     private static final Logger logger = LogManager.getLogger(ClientRegistrationServiceImpl.class.getName());
     private RequestDao requestDao;
     private ClientDao clientDao;
+
+    @Value("${request.maxTerm}")
+    private String maxTerm;
 
     public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao) {
         this.requestDao = requestDao;
@@ -50,6 +54,29 @@ public class RequestRestServiceImpl implements RequestRestService {
         requestDto.setDate(request.getDate());
         return requestDto;
 
+    }
+
+    /**
+     * примитивная проверка заявки на запрошенный срок, чтобы одобрить заявку или отказать
+     * @param uuid
+     * @return
+     */
+    @Override
+    public RequestDto checkRequest(UUID uuid) {
+        Request req = requestDao.get(uuid);
+        RequestDto requestDto = new RequestDto(uuid, req.getDate(), req.getSum(), req.getTerm(), req.getClient().getId(), req.getClient().getFullName());
+        if (req.getStatus().equals(Status.ON_WORK)) {
+            if (req.getTerm() <= Integer.valueOf(maxTerm)) {
+                requestDao.checkAndUpdate(req, true);
+                requestDto.setStatus(req.getStatus().toString());
+                return requestDto;
+            } else {
+                requestDao.checkAndUpdate(req, false);
+                requestDto.setStatus(req.getStatus().toString());
+                return requestDto;
+            }
+        } else
+            return requestDto;
     }
 
     /**

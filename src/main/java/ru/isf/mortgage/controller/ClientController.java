@@ -42,7 +42,7 @@ public class ClientController {
      * Вывод списка клиентов
      * @return
      */
-    @GetMapping(value = "/show")
+    @GetMapping()
     public List<Client> showClients() {
         return clientRegistrationService.showClients();
     }

@@ -32,7 +32,7 @@ public class  RequestController {
      * @param requestDto
      * @return
      */
-    @PostMapping(value = "/add")
+    @PostMapping()
     public ResponseEntity<RequestDto>  addRequest(@RequestBody RequestDto requestDto, UriComponentsBuilder componentsBuilder) {
         RequestDto req =  requestRestService.addRequest(requestDto);
         URI uri = componentsBuilder.path("/api/request/" + req.getId()).buildAndExpand(req).toUri();
@@ -43,7 +43,7 @@ public class  RequestController {
      * Вывод списка заявок
      * @return
      */
-    @GetMapping(value = "/show")
+    @GetMapping()
     public List<Request> showRequests() {
         return requestRestService.showRequests();
     }
@@ -62,17 +62,27 @@ public class  RequestController {
      * @param uuid
      * @return
      */
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public RequestDto updateRequest(@PathVariable(value = "id") UUID uuid) {
         return requestRestService.updateRequest(uuid);
     }
 
     /**
-     *
-     * @param requestDto
+     * Проверка заявки и обновление статуса
+     * @param uuid
+     * @return
      */
-    @DeleteMapping()
-    public void deleteRequest(@RequestBody RequestDto requestDto) {
-        requestRestService.deleteRequest(requestDto.getId());
+    @PutMapping(value = "check/{id}")
+    public RequestDto checkRequest(@PathVariable(value = "id") UUID uuid) {
+        return requestRestService.checkRequest(uuid);
+    }
+
+    /**
+     *
+     * @param uuid
+     */
+    @DeleteMapping(value = "/{id}")
+    public void deleteRequest(@PathVariable(value = "id") UUID uuid) {
+        requestRestService.deleteRequest(uuid);
     }
 }
