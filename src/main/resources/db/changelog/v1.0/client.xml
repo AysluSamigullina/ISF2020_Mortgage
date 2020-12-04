@@ -26,4 +26,15 @@
 
         <comment>Задача по созданию пользователя</comment>
     </changeSet>
+    <changeSet id="2" author="Ayslu S">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists tableName="client" indexName="client_fullname_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="client" indexName="client_fullname_idx">
+            <column name="fullname"/>
+        </createIndex>
+        <comment>Индекс для поиска по имени клиента</comment>
+    </changeSet>
 </databaseChangeLog>
