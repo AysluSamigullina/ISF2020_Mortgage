@@ -1,6 +1,7 @@
 package ru.isf.mortgage.repo;
 
 import org.springframework.stereotype.Repository;
+import ru.isf.mortgage.controller.dto.RequestDto;
 import ru.isf.mortgage.entity.Request;
 import ru.isf.mortgage.entity.Status;
 
@@ -10,12 +11,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class RequestDaoImpl implements RequestDao{
+public class RequestDaoImpl implements RequestDao {
     private List<Request> requestList = new ArrayList<>();
 
     /**
      * Добавляет заявку
-     *  * получения заявки по id,
+     * * получения заявки по id,
+     *
      * @param request
      */
     @Override
@@ -25,6 +27,7 @@ public class RequestDaoImpl implements RequestDao{
 
     /**
      * Проверяет и обновляет статус статус заявки до добрения и отказа
+     *
      * @param request
      * @param bool
      */
@@ -37,8 +40,16 @@ public class RequestDaoImpl implements RequestDao{
         }
     }
 
+    @Override
+    public void updateNew(Request request) {
+        Request old = get(request.getId());
+        delete(request.getId());
+        add(request);
+    }
+
     /**
-     *  Обновляет заявку
+     * Обновляет заявку
+     *
      * @param request
      */
     @Override
@@ -50,6 +61,7 @@ public class RequestDaoImpl implements RequestDao{
 
     /**
      * Возвращает заявку по id
+     *
      * @param id
      * @return
      */
@@ -61,6 +73,7 @@ public class RequestDaoImpl implements RequestDao{
 
     /**
      * Удаляет заявку из списка
+     *
      * @param id
      */
     @Override
@@ -70,6 +83,7 @@ public class RequestDaoImpl implements RequestDao{
 
     /**
      * Выводит заявки
+     *
      * @return
      */
     @Override

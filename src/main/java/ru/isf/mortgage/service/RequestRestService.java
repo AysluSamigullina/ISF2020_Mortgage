@@ -31,29 +31,16 @@ public interface RequestRestService {
     RequestDto getRequest(UUID id);
 
     /**
-     * Получение статуса заявки по ее id
-     * @param id
-     * @return
-     */
-    String getRequestStatus(UUID id);
-
-    /**
      * Удаление заявки из списка заявок
      * @param id
      */
     void deleteRequest(UUID id);
 
     /**
-     * Обновление заявки со статусом "новый" на статус "в работе"
-     * @param uuid
+     * Обновление заявки
+     * @param dto
      * @return
      */
-    RequestDto updateRequest(UUID uuid);
+    RequestDto updateRequest(RequestDto dto);
 
-    /**
-     * Проверяет параметры заявки
-     * @param uuid
-     * @return
-     */
-    RequestDto checkRequest(UUID uuid);
 }

@@ -1,5 +1,6 @@
 package ru.isf.mortgage.repo;
 
+import ru.isf.mortgage.controller.dto.RequestDto;
 import ru.isf.mortgage.entity.Request;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.UUID;
  */
 public interface RequestDao {
     /**
-     * Добавляет заявки в список
+     * Добавляет заявку в список
      * @param request
      */
     void add(Request request);
@@ -21,6 +22,7 @@ public interface RequestDao {
      */
     void update(Request request);
 
+    void updateNew(Request request);
     /**
      * Проверяет заявки и обновляет статус
      * @param request

@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 @Service
 public class RequestRestServiceImpl implements RequestRestService {
-    private static final Logger logger = LogManager.getLogger(ClientRegistrationServiceImpl.class.getName());
+    private static final Logger logger = LogManager.getLogger(RequestRestServiceImpl.class.getName());
     private RequestDao requestDao;
     private ClientDao clientDao;
 
@@ -35,13 +35,15 @@ public class RequestRestServiceImpl implements RequestRestService {
      * Добавление заявки в список заявок
      * Если существует клиент с таким ФИО, то новый клиент от заявки не создается.
      * Если не существует такого клиента, то создается новая заявка и новый клиент
+     *
      * @param requestDto
      * @return
      */
     @Override
     public RequestDto addRequest(RequestDto requestDto) {
+        logger.debug("add request");
         Request request = new Request(requestDto.getSum(), requestDto.getTerm());
-        Client client = clientDao.getClient(requestDto.getClientFullName());
+        Client client = clientDao.getClientByFullName(requestDto.getClientFullName());
         if (client == null) {
             client = new Client(requestDto.getClientFullName());
             clientDao.add(client);
@@ -51,87 +53,50 @@ public class RequestRestServiceImpl implements RequestRestService {
         requestDto.setId(request.getId());
         requestDto.setClientId(client.getId());
         requestDto.setStatus(request.getStatus().toString());
-        requestDto.setDate(request.getDate());
         return requestDto;
-
     }
 
-    /**
-     * примитивная проверка заявки на запрошенный срок, чтобы одобрить заявку или отказать
-     * @param uuid
-     * @return
-     */
     @Override
-    public RequestDto checkRequest(UUID uuid) {
-        Request req = requestDao.get(uuid);
-        RequestDto requestDto = new RequestDto(uuid, req.getDate(), req.getSum(), req.getTerm(), req.getClient().getId(), req.getClient().getFullName());
-        if (req.getStatus().equals(Status.ON_WORK)) {
-            if (req.getTerm() <= Integer.valueOf(maxTerm)) {
-                requestDao.checkAndUpdate(req, true);
-                requestDto.setStatus(req.getStatus().toString());
-                return requestDto;
-            } else {
-                requestDao.checkAndUpdate(req, false);
-                requestDto.setStatus(req.getStatus().toString());
-                return requestDto;
-            }
-        } else
-            return requestDto;
-    }
-
-    /**
-     * Обновление заявки со статусом "новый" на статус "в работе"
-     * @param uuid
-     * @return
-     */
-    @Override
-    public RequestDto updateRequest(UUID uuid) {
-        Request req = requestDao.get(uuid);
-        if (req != null && req.getStatus().equals(Status.NEW)) {
-            requestDao.update(req);
-            RequestDto requestDto = new RequestDto(uuid, req.getDate(), req.getSum(), req.getTerm(), req.getClient().getId(), req.getClient().getFullName());
-            requestDto.setStatus(Status.ON_WORK.toString());
-            return requestDto;
-        }
-        return null;
+    public RequestDto updateRequest(RequestDto requestDto) {
+        logger.debug("update request");
+        Request req = requestDao.get(requestDto.getId());
+        req.setSum(requestDto.getSum());
+        req.setTerm(requestDto.getTerm());
+        req.setStatus(Status.valueOf(requestDto.getStatus()));
+        requestDao.updateNew(req);
+        return requestDto;
     }
 
     /**
      * Вывод списка заявок
+     *
      * @return
      */
     @Override
     public List<Request> showRequests() {
-         return requestDao.show();
+        return requestDao.show();
     }
 
     /**
      * Получение заявки по ее id
+     *
      * @param id
      * @return
      */
     @Override
     public RequestDto getRequest(UUID id) {
         Request req = requestDao.get(id);
-        return new RequestDto(req.getId(), req.getDate(), req.getSum(), req.getTerm(), req.getClient().getId(), req.getClient().getFullName(), req.getStatus());
-    }
-
-    /**
-     * Получение статуса заявки по ее id
-     * @param id
-     * @return
-     */
-    @Override
-    public String getRequestStatus(UUID id) {
-        return null;
+        return new RequestDto(req.getId(), req.getSum(), req.getTerm(), req.getClient().getId(), req.getClient().getFullName(), req.getStatus());
     }
 
     /**
      * Удаление заявки из списка заявок
+     *
      * @param id
      */
     @Override
     public void deleteRequest(UUID id) {
+        logger.debug("delete request");
         requestDao.delete(id);
     }
 }

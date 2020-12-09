@@ -57,28 +57,22 @@ public class  RequestController {
     public RequestDto showRequestById(@PathVariable("id") UUID uuid) {
         return requestRestService.getRequest(uuid);
     }
+
     /**
-     * Обновление статуса заявки
+     * Обновление заявки
      * @param uuid
      * @return
      */
     @PutMapping(value = "/{id}")
-    public RequestDto updateRequest(@PathVariable(value = "id") UUID uuid) {
-        return requestRestService.updateRequest(uuid);
+    public RequestDto updateRequest(@PathVariable(value = "id") UUID uuid, @RequestBody RequestDto requestDto) {
+        if (!uuid.equals(requestDto.getId())) {
+            throw new RuntimeException("ids are not equal");
+        }
+        return requestRestService.updateRequest(requestDto);
     }
 
     /**
-     * Проверка заявки и обновление статуса
-     * @param uuid
-     * @return
-     */
-    @PutMapping(value = "check/{id}")
-    public RequestDto checkRequest(@PathVariable(value = "id") UUID uuid) {
-        return requestRestService.checkRequest(uuid);
-    }
-
-    /**
-     *
+     * Удаление заявки из списка
      * @param uuid
      */
     @DeleteMapping(value = "/{id}")

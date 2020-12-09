@@ -15,6 +15,11 @@ public class ClientDto {
      */
     private String fullName;
 
+    public ClientDto(UUID id, String fullName) {
+        this.id = id;
+        this.fullName = fullName;
+    }
+
     public ClientDto() {}
 
     public UUID getId() {

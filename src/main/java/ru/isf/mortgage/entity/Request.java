@@ -1,7 +1,6 @@
 package ru.isf.mortgage.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -12,11 +11,6 @@ public class Request {
      * id заявки
      */
     private UUID id;
-
-    /**
-     * Дата заявки
-     */
-    private LocalDate date;
 
     /**
      * Сумма заявки
@@ -45,7 +39,6 @@ public class Request {
 
     public Request(BigDecimal sum, int term) {
         this.id = UUID.randomUUID();
-        this.date = LocalDate.now();
         this.sum = sum;
         this.term = term;
         this.status = Status.NEW;
@@ -57,14 +50,6 @@ public class Request {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public BigDecimal getSum() {
@@ -101,6 +86,6 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request id = " + id + ", date = " + date + ", sum = " + sum + ", term = " + term + "months" + ", Client = " + client.getFullName() + ", status = " + status;
+        return "Request id = " + id  + ", sum = " + sum + ", term = " + term + "months" + ", Client = " + client.getFullName() + ", status = " + status;
     }
 }

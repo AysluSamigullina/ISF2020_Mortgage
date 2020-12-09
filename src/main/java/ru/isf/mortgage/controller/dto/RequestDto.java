@@ -3,7 +3,6 @@ package ru.isf.mortgage.controller.dto;
 import ru.isf.mortgage.entity.Status;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -14,10 +13,6 @@ public class RequestDto {
      * id заявки
      */
     private UUID id;
-    /**
-     * Дата отправки заявки
-     */
-    private LocalDate date;
     /**
      * Сумма заявки
      */
@@ -41,9 +36,8 @@ public class RequestDto {
 
     public RequestDto() {}
 
-    public RequestDto(UUID id, LocalDate date, BigDecimal sum, int term, UUID id1, String fullName, Status status) {
+    public RequestDto(UUID id, BigDecimal sum, int term, UUID clientId, String clientFullName, Status status) {
         this.id = id;
-        this.date = date;
         this.sum = sum;
         this.term = term;
         this.clientId = clientId;
@@ -59,9 +53,8 @@ public class RequestDto {
         this.status = status;
     }
 
-    public RequestDto(UUID id, LocalDate date, BigDecimal sum, int term, UUID clientId, String clientFullName) {
+    public RequestDto(UUID id, BigDecimal sum, int term, UUID clientId, String clientFullName) {
         this.id = id;
-        this.date = date;
         this.sum = sum;
         this.term = term;
         this.clientId = clientId;
@@ -82,14 +75,6 @@ public class RequestDto {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public BigDecimal getSum() {
