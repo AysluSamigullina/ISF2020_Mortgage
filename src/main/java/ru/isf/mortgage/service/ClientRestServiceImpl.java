@@ -3,15 +3,17 @@ package ru.isf.mortgage.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import ru.isf.mortgage.controller.dto.ClientSearchDto;
 import ru.isf.mortgage.controller.dto.ClientDto;
 import ru.isf.mortgage.entity.Client;
 import ru.isf.mortgage.repo.ClientDao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Реализауия сервиса по работе с клиентом
+ * Реализация сервиса по работе с клиентом
  */
 @Service
 public class ClientRestServiceImpl implements ClientRestService {
@@ -27,7 +29,7 @@ public class ClientRestServiceImpl implements ClientRestService {
      * Добавление клиента в список клиентов
      *
      * @param clientDto
-     * @return
+     * @return ClientDto модель - новая заявка
      */
     @Override
     public ClientDto addClient(ClientDto clientDto) {
@@ -41,19 +43,31 @@ public class ClientRestServiceImpl implements ClientRestService {
     /**
      * Вывод списка клиентов
      *
-     * @return
+     * @return List<ClientDto> список клиентов
      */
     @Override
-    public List<Client> showClients() {
-        return clientDao.show();
+    public List<ClientDto> showClients() {
+        List<Client> clients = clientDao.show();
+        List<ClientDto> clientDtoList = new ArrayList<>();
+        clients.stream().forEach(client -> clientDtoList.add(new ClientDto(client.getId(), client.getFullName())));
+        return clientDtoList;
     }
 
+    /**
+     * Вывод клиента по его id
+     * @param uuid идентификатор клиента
+     * @return ClientDto модель клиента, найденная по указанному id
+     */
     @Override
     public ClientDto getClientById(UUID uuid) {
         Client client = clientDao.getClientById(uuid);
         return new ClientDto(client.getId(), client.getFullName());
     }
 
+    /**
+     * Удаление клиента по его id
+     * @param uuid идентификатор клиента
+     */
     @Override
     public void deleteClient(UUID uuid) {
         logger.debug("delete client");
@@ -61,6 +75,27 @@ public class ClientRestServiceImpl implements ClientRestService {
         clientDao.delete(client);
     }
 
+    /**
+     * Получение клиента по его имени или всего списка клиентов
+     * @param clientDto модель для поиска клиента
+     * @return List<ClientDto> список клиентов
+     */
+    @Override
+    public List<ClientDto> getClientByNameOrAllClients(ClientSearchDto clientDto) {
+        if (clientDto.getName() == null) {
+            return showClients();
+        } else {
+            List<ClientDto> list = new ArrayList<>();
+            list.add(getClientByName(clientDto.getName()));
+            return list;
+        }
+    }
+
+    /**
+     * Обновление клиента новыми данными
+     * @param clientDto существующий клиент с измененными полями
+     * @return ClientDto клиент с обновленными полями
+     */
     @Override
     public ClientDto updateClient(ClientDto clientDto) {
         logger.debug("update client");
@@ -70,6 +105,11 @@ public class ClientRestServiceImpl implements ClientRestService {
         return clientDto;
     }
 
+    /**
+     * Вывод клиента по его имени
+     * @param name имя клиента
+     * @return ClientDto модель клиента, найденная по указанному имени
+     */
     @Override
     public ClientDto getClientByName(String name) {
         Client client = clientDao.getClientByFullName(name);

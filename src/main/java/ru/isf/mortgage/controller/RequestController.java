@@ -29,8 +29,8 @@ public class  RequestController {
 
     /**
      * Добавление заявки в список заявок
-     * @param requestDto
-     * @return
+     * @param requestDto новая заявка
+     * @return созданная и записанная заявка
      */
     @PostMapping()
     public ResponseEntity<RequestDto>  addRequest(@RequestBody RequestDto requestDto, UriComponentsBuilder componentsBuilder) {
@@ -41,7 +41,7 @@ public class  RequestController {
 
     /**
      * Вывод списка заявок
-     * @return
+     * @return список всех заявок
      */
     @GetMapping()
     public List<Request> showRequests() {
@@ -50,8 +50,8 @@ public class  RequestController {
 
     /**
      * Вывод заявки по id
-     * @param uuid
-     * @return
+     * @param uuid идентификатор заявки
+     * @return заявка с указанным иденификатором
      */
     @GetMapping(value = "/{id}")
     public RequestDto showRequestById(@PathVariable("id") UUID uuid) {
@@ -60,8 +60,8 @@ public class  RequestController {
 
     /**
      * Обновление заявки
-     * @param uuid
-     * @return
+     * @param uuid идентификатор заявки
+     * @return обновленная заявки с новыми значениями
      */
     @PutMapping(value = "/{id}")
     public RequestDto updateRequest(@PathVariable(value = "id") UUID uuid, @RequestBody RequestDto requestDto) {
@@ -73,7 +73,7 @@ public class  RequestController {
 
     /**
      * Удаление заявки из списка
-     * @param uuid
+     * @param uuid идентификатор заявки
      */
     @DeleteMapping(value = "/{id}")
     public void deleteRequest(@PathVariable(value = "id") UUID uuid) {

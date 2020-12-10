@@ -36,8 +36,8 @@ public class RequestRestServiceImpl implements RequestRestService {
      * Если существует клиент с таким ФИО, то новый клиент от заявки не создается.
      * Если не существует такого клиента, то создается новая заявка и новый клиент
      *
-     * @param requestDto
-     * @return
+     * @param requestDto новая заявка на запись
+     * @return RequestDto записанная новая заявка с проставленным id
      */
     @Override
     public RequestDto addRequest(RequestDto requestDto) {
@@ -56,6 +56,12 @@ public class RequestRestServiceImpl implements RequestRestService {
         return requestDto;
     }
 
+    /**
+     * Обновление полей существующей заявки новыми значениями
+     *
+     * @param requestDto приходит сушествующая заявка с новыми полями
+     * @return RequestDto обновленная записанная заявка
+     */
     @Override
     public RequestDto updateRequest(RequestDto requestDto) {
         logger.debug("update request");
@@ -70,7 +76,7 @@ public class RequestRestServiceImpl implements RequestRestService {
     /**
      * Вывод списка заявок
      *
-     * @return
+     * @return List<Request> список заявок
      */
     @Override
     public List<Request> showRequests() {
@@ -80,8 +86,8 @@ public class RequestRestServiceImpl implements RequestRestService {
     /**
      * Получение заявки по ее id
      *
-     * @param id
-     * @return
+     * @param id идентификатор заявки
+     * @return RequestDto модель заявки, найденная по указанномц id
      */
     @Override
     public RequestDto getRequest(UUID id) {
@@ -92,7 +98,7 @@ public class RequestRestServiceImpl implements RequestRestService {
     /**
      * Удаление заявки из списка заявок
      *
-     * @param id
+     * @param id идентификатор заявки
      */
     @Override
     public void deleteRequest(UUID id) {

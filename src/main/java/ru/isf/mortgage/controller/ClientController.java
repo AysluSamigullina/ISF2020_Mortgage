@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.isf.mortgage.controller.dto.ClientDto;
-import ru.isf.mortgage.entity.Client;
+import ru.isf.mortgage.controller.dto.ClientSearchDto;
 import ru.isf.mortgage.service.ClientRestService;
 
 import java.net.URI;
@@ -30,8 +30,8 @@ public class ClientController {
 
     /**
      * Добавление клиента в список клиентов
-     * @param clientDto
-     * @return
+     * @param clientDto новый клиент с заполненными полями
+     * @return созданный dto с клиентом
      */
     @PostMapping()
     public ResponseEntity<ClientDto> addClient(@RequestBody ClientDto clientDto, UriComponentsBuilder componentsBuilder) {
@@ -42,41 +42,32 @@ public class ClientController {
     }
 
     /**
-     * Вывод списка клиентов
-     * @return
+     * Вывод списка клиентов. Если в ClientSearchDto указано имя клиента, то выводится этот клиент.
+     * Если body не заполнено, то выводится весь список клиентов
+     * @return List<ClientDto> список клиентов
      */
     @GetMapping()
-    public List<Client> showClients() {
-        return clientRestService.showClients();
+    public List<ClientDto> showClients(@RequestBody ClientSearchDto clientDto) {
+        return clientRestService.getClientByNameOrAllClients(clientDto);
     }
 
     /**
      * Вывод клиента по его id
-     * @param uuid
-     * @return
+     * @param uuid идентификатор клиента
+     * @return клиент с отправленным id
      */
-    @GetMapping(value = "id/{id}")
+    @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ClientDto getClientById(@PathVariable("id") UUID uuid) {
         return clientRestService.getClientById(uuid);
     }
 
-    /**
-     * Вывод клиента по его имени
-     * @param name
-     * @return
-     */
-    @GetMapping(value = "name/{name}")
-    @ResponseStatus(HttpStatus.OK)
-    public ClientDto getClientByName(@PathVariable("name") String name) {
-        return clientRestService.getClientByName(name);
-    }
 
     /**
      * Обновление данных клиента
-     * @param id
-     * @param clientDto
-     * @return
+     * @param id идентификатор клиента
+     * @param clientDto dto клиента с новыми значениями
+     * @return записанное dto  с новыми значениями
      */
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -89,7 +80,7 @@ public class ClientController {
 
     /**
      * Удаление клиента из списка
-     * @param uuid
+     * @param uuid идентификатор клиента
      */
     @DeleteMapping(value = "/{id}")
     public void deleteClient(@PathVariable("id") UUID uuid){

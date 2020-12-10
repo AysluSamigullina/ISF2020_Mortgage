@@ -35,26 +35,6 @@
 			"response": []
 		},
 		{
-			"name": "get client by full name",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/client/петров иван",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"client",
-						"петров иван"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "get client by id",
 			"request": {
 				"method": "GET",
@@ -76,10 +56,22 @@
 			"response": []
 		},
 		{
-			"name": "show clients",
+			"name": "show all clients or client by name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "localhost:8080/api/client",
 					"host": [

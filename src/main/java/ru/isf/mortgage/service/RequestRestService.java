@@ -12,34 +12,34 @@ import java.util.UUID;
 public interface RequestRestService {
     /**
      * Добавление заявки в список заявок
-     * @param requestDto
-     * @return
+     * @param requestDto новая заявка
+     * @return RequestDto созданная заявка с заполненным полем id
      */
     RequestDto addRequest(RequestDto requestDto);
 
     /**
      * Вывод списка заявок
-     * @return
+     * @return List<Request> список заявок
      */
     List<Request> showRequests();
 
     /**
      * Получение заявки по ее id
-     * @param id
-     * @return
+     * @param id идентификатор заявки
+     * @return RequestDto модель заявки, найденная по ее id
      */
     RequestDto getRequest(UUID id);
 
     /**
      * Удаление заявки из списка заявок
-     * @param id
+     * @param id идентификатор заяаки
      */
     void deleteRequest(UUID id);
 
     /**
      * Обновление заявки
-     * @param dto
-     * @return
+     * @param dto заявка с новыми полями для изменения
+     * @return RequestDto заявка с обновленными полями
      */
     RequestDto updateRequest(RequestDto dto);
 
