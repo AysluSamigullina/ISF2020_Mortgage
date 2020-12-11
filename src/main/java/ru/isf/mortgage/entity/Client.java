@@ -20,6 +20,11 @@ public class Client {
         this.id = UUID.randomUUID();
     }
 
+    public Client(String fullName) {
+        this.id = UUID.randomUUID();
+        this.fullName = fullName;
+    }
+
     public UUID getId() {
         return id;
     }
