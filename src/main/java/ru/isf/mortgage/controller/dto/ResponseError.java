@@ -8,6 +8,15 @@ public class ResponseError {
     private String codeError;
     private String systemId;
 
+    public ResponseError(UUID id, String message) {
+        this.id = id;
+        this.message = message;
+    }
+
+    public ResponseError() {
+
+    }
+
     public UUID getId() {
         return id;
     }

@@ -28,7 +28,6 @@ public class RequestRestServiceImpl implements RequestRestService {
     @Value("${request.maxTerm}")
     private String maxTerm;
 
-    public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao) {
     public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao, RequestDtoValidator requestDtoValidator) {
         this.requestDao = requestDao;
         this.clientDao = clientDao;

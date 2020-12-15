@@ -10,6 +10,7 @@ import ru.isf.mortgage.entity.Request;
 import ru.isf.mortgage.service.RequestRestService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,11 +34,21 @@ public class  RequestController {
      * @return созданная и записанная заявка
      */
     @PostMapping()
-    public ResponseEntity<RequestDto>  addRequest(@RequestBody RequestDto requestDto, UriComponentsBuilder componentsBuilder) {
+    public ResponseEntity<RequestDto> addRequest(@RequestBody RequestDto requestDto, UriComponentsBuilder componentsBuilder) {
         RequestDto req =  requestRestService.addRequest(requestDto);
         URI uri = componentsBuilder.path("/api/request/" + req.getId()).buildAndExpand(req).toUri();
         return ResponseEntity.created(uri).body(req);
     }
+//
+//    @PostMapping()
+//    public List<Object> addReq(@RequestBody RequestDto requestDto, UriComponentsBuilder componentsBuilder) {
+//    //    RequestDto req =  requestRestService.addRequest(requestDto);
+//    //    URI uri = componentsBuilder.path("/api/request/" + req.getId()).buildAndExpand(req).toUri();
+//        ArrayList<Object> list = new ArrayList<>();
+//        list.add("dfgdg");
+//        list.add(new RequestDto());
+//        return list;
+//    }
 
     /**
      * Вывод списка заявок
