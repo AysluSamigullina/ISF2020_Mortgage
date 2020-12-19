@@ -39,16 +39,6 @@ public class  RequestController {
         URI uri = componentsBuilder.path("/api/request/" + req.getId()).buildAndExpand(req).toUri();
         return ResponseEntity.created(uri).body(req);
     }
-//
-//    @PostMapping()
-//    public List<Object> addReq(@RequestBody RequestDto requestDto, UriComponentsBuilder componentsBuilder) {
-//    //    RequestDto req =  requestRestService.addRequest(requestDto);
-//    //    URI uri = componentsBuilder.path("/api/request/" + req.getId()).buildAndExpand(req).toUri();
-//        ArrayList<Object> list = new ArrayList<>();
-//        list.add("dfgdg");
-//        list.add(new RequestDto());
-//        return list;
-//    }
 
     /**
      * Вывод списка заявок

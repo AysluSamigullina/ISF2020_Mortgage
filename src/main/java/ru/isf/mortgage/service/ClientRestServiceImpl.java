@@ -2,6 +2,7 @@ package ru.isf.mortgage.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import ru.isf.mortgage.controller.dto.ClientSearchDto;
 import ru.isf.mortgage.controller.dto.ClientDto;
@@ -11,6 +12,7 @@ import ru.isf.mortgage.repo.ClientDao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * Реализация сервиса по работе с клиентом
@@ -37,7 +39,16 @@ public class ClientRestServiceImpl implements ClientRestService {
         Client client = new Client(clientDto.getFullName());
         clientDao.add(client);
         clientDto.setId(client.getId());
+        postOperation(client);
         return clientDto;
+    }
+
+    @Override
+    @Async
+    public void postOperation(Client client) {
+        LockSupport.parkNanos(5_000_000_000L);
+        logger.info("post operation for " + client.getId());
+        throw new RuntimeException("RuntimeException");
     }
 
     /**

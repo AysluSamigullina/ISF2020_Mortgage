@@ -44,6 +44,7 @@ public class RequestRestServiceImpl implements RequestRestService {
      */
     @Override
     public RequestDto addRequest(RequestDto requestDto) {
+        logger.debug("add request");
         requestDtoValidator.validate(requestDto);
         Request request = new Request(requestDto.getSum(), requestDto.getTerm());
         Client client = clientDao.getClientByFullName(requestDto.getClientFullName());
@@ -57,6 +58,7 @@ public class RequestRestServiceImpl implements RequestRestService {
         requestDto.setClientId(client.getId());
         requestDto.setStatus(request.getStatus().toString());
         return requestDto;
+
     }
 
     /**
