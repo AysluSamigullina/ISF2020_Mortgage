@@ -1,37 +1,70 @@
 package ru.isf.mortgage.repo;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.isf.mortgage.controller.dto.ClientDto;
 import ru.isf.mortgage.entity.Client;
+import ru.isf.mortgage.service.ClientRestServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Реализация интерфейса ClientDao
  */
 @Repository
 public class ClientDaoImpl implements ClientDao {
-    private List<Client> clientList = new ArrayList<>();
+
+    private static final Logger logger = LogManager.getLogger(ClientDaoImpl.class.getName());
+
+    private JdbcTemplate jdbcTemplate;
+
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    private SimpleJdbcInsert simpleJdbcInsert;
+
+    private SimpleJdbcCall simpleJdbcCall;
+
+    public ClientDaoImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, SimpleJdbcInsert simpleJdbcInsert, SimpleJdbcCall simpleJdbcCall) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.simpleJdbcInsert = simpleJdbcInsert;
+        this.simpleJdbcCall = simpleJdbcCall;
+        simpleJdbcInsert.withTableName("client");
+    }
 
     /**
      * Добавляет клиента в список
      * @param client
      */
     @Override
-    public void add(Client client) {
-        clientList.add(client);
+    public Client add(Client client) {
+        client.setId(UUID.randomUUID());
+        int result = addClientUsingSimpleJdbcInsert(client);
+        logger.info("add " + result);
+        return client;
+    }
+
+    private int addClientUsingSimpleJdbcInsert(final Client client) {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("id", client.getId());
+        parameters.put("fullName", client.getFullName());
+        return simpleJdbcInsert.execute(parameters);
     }
 
     /**
      * Удаляет клиента из списка
-     * @param client
+     * @param uuid
      */
     @Override
-    public void delete(Client client) {
-        clientList.remove(client);
+    public void delete(UUID uuid) {
+        jdbcTemplate.update("DELETE FROM client WHERE id = ?", uuid);
     }
 
     /**
@@ -40,7 +73,7 @@ public class ClientDaoImpl implements ClientDao {
      */
     @Override
     public List<Client> show() {
-        return clientList;
+        return jdbcTemplate.query("SELECT * FROM client", new ClientRowMapper());
     }
 
     /**
@@ -49,8 +82,7 @@ public class ClientDaoImpl implements ClientDao {
      */
     @Override
     public void updateClient(Client client) {
-        Client cl = getClientById(client.getId());
-        cl.setFullName(client.getFullName());
+        jdbcTemplate.update("update client set fullname = ? WHERE id = ?", client.getFullName(), client.getId());
     }
 
     /**
@@ -60,12 +92,7 @@ public class ClientDaoImpl implements ClientDao {
      */
     @Override
     public Client getClientById(UUID uuid) {
-        for (Client client : clientList) {
-            if (client.getId().equals(uuid)) {
-                return client;
-            }
-        }
-        return null;
+        return jdbcTemplate.queryForObject("SELECT * FROM client WHERE id = ?", new Object[]{uuid}, new ClientRowMapper());
     }
 
     /**
@@ -75,11 +102,14 @@ public class ClientDaoImpl implements ClientDao {
      */
     @Override
     public Client getClientByFullName(String fullname) {
-        for (Client client : clientList) {
-            if (client.getFullName().equals(fullname)) {
-                return client;
-            }
-        }
-        return null;
+        return getClientUsingMapSqlParameterSource(fullname);
+
+    }
+
+    private Client getClientUsingMapSqlParameterSource(String fullname) {
+        final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("fullName", fullname);
+
+        return namedParameterJdbcTemplate
+                .queryForObject("SELECT * FROM client WHERE fullName = :fullName", namedParameters, new ClientRowMapper());
     }
 }

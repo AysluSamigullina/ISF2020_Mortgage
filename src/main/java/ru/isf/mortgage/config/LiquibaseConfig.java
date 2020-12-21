@@ -20,5 +20,5 @@ public class LiquibaseConfig {
         liquibase.setDataSource(dataSource);
         liquibase.setChangeLog("classpath:db/changelog/changelog-master.xml");
         return liquibase;
-    } //db.changelog/changelog-master.xml
+    }
 }

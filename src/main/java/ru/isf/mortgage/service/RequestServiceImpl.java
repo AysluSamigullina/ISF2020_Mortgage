@@ -20,6 +20,7 @@ import java.util.UUID;
 public class RequestServiceImpl implements RequestService {
 
     private RequestDao requestDao;
+
     @Value("${request.maxTerm}")
     private String maxTerm;
 

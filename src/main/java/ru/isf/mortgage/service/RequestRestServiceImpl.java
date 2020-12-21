@@ -2,7 +2,6 @@ package ru.isf.mortgage.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.isf.mortgage.controller.dto.RequestDto;
 import ru.isf.mortgage.entity.Client;
@@ -10,6 +9,7 @@ import ru.isf.mortgage.entity.Request;
 import ru.isf.mortgage.entity.Status;
 import ru.isf.mortgage.repo.ClientDao;
 import ru.isf.mortgage.repo.RequestDao;
+import ru.isf.mortgage.validator.RequestDtoValidator;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,9 +22,6 @@ public class RequestRestServiceImpl implements RequestRestService {
     private static final Logger logger = LogManager.getLogger(RequestRestServiceImpl.class.getName());
     private RequestDao requestDao;
     private ClientDao clientDao;
-
-    @Value("${request.maxTerm}")
-    private String maxTerm;
 
     public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao) {
         this.requestDao = requestDao;
