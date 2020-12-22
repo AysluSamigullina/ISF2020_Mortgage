@@ -2,6 +2,7 @@ package ru.isf.mortgage.service;
 
 import ru.isf.mortgage.controller.dto.ClientSearchDto;
 import ru.isf.mortgage.controller.dto.ClientDto;
+import ru.isf.mortgage.entity.Client;
 
 import java.util.List;
 import java.util.UUID;

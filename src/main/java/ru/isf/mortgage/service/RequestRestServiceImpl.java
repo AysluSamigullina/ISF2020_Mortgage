@@ -10,6 +10,7 @@ import ru.isf.mortgage.entity.Request;
 import ru.isf.mortgage.entity.Status;
 import ru.isf.mortgage.repo.ClientDao;
 import ru.isf.mortgage.repo.RequestDao;
+import ru.isf.mortgage.validator.RequestDtoValidator;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,13 +23,15 @@ public class RequestRestServiceImpl implements RequestRestService {
     private static final Logger logger = LogManager.getLogger(RequestRestServiceImpl.class.getName());
     private RequestDao requestDao;
     private ClientDao clientDao;
+    private RequestDtoValidator requestDtoValidator;
 
     @Value("${request.maxTerm}")
     private String maxTerm;
 
-    public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao) {
+    public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao, RequestDtoValidator requestDtoValidator) {
         this.requestDao = requestDao;
         this.clientDao = clientDao;
+        this.requestDtoValidator = requestDtoValidator;
     }
 
     /**
@@ -42,6 +45,7 @@ public class RequestRestServiceImpl implements RequestRestService {
     @Override
     public RequestDto addRequest(RequestDto requestDto) {
         logger.debug("add request");
+        requestDtoValidator.validate(requestDto);
         Request request = new Request(requestDto.getSum(), requestDto.getTerm());
         Client client = clientDao.getClientByFullName(requestDto.getClientFullName());
         if (client == null) {
@@ -54,6 +58,7 @@ public class RequestRestServiceImpl implements RequestRestService {
         requestDto.setClientId(client.getId());
         requestDto.setStatus(request.getStatus().toString());
         return requestDto;
+
     }
 
     /**
