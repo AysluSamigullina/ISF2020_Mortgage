@@ -25,7 +25,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="sum" type="numeric" remarks="Сумма заявки">
+            <column name="sum" type="numeric(0,8)" remarks="Сумма заявки">
                 <constraints nullable="false"/>
             </column>
 
