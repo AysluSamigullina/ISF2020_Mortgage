@@ -107,7 +107,6 @@ public class RequestRestServiceImpl implements RequestRestService {
      */
     @Override
     public void deleteRequest(UUID id) {
-        logger.debug("delete request");
         requestDao.delete(id);
     }
 }

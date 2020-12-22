@@ -1,0 +1,53 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="1" author="Ayslu S">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="request"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="request"
+                     remarks="Таблица заявок">
+
+            <column name="id" type="uuid"
+                    remarks="Идентификатор записи">
+                <constraints primaryKey="true"
+                             primaryKeyName="request_pk"
+                             nullable="false"/>
+            </column>
+
+            <column name="date" type="timestamp with time zone" remarks="Дата создания заявки">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="sum" type="numeric(8,0)" remarks="Сумма заявки">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="term" type="smallint" remarks="Длительность ипотеки в месяцах">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="client_id" type="uuid" remarks="Идентификатор клиента">
+                <constraints foreignKeyName="request_fk_client_id"
+                             referencedTableName="client"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+
+            <column name="status" type="varchar(255)" remarks="Статус заявки">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <comment>Задача по созданию заявки</comment>
+
+    </changeSet>
+
+</databaseChangeLog>
