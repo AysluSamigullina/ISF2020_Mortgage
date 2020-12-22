@@ -39,16 +39,7 @@ public class ClientRestServiceImpl implements ClientRestService {
         Client client = new Client(clientDto.getFullName());
         clientDao.add(client);
         clientDto.setId(client.getId());
-        postOperation(client);
         return clientDto;
-    }
-
-    @Override
-    @Async
-    public void postOperation(Client client) {
-        LockSupport.parkNanos(5_000_000_000L);
-        logger.info("post operation for " + client.getId());
-        throw new RuntimeException("RuntimeException");
     }
 
     /**

@@ -52,6 +52,4 @@ public interface ClientRestService {
     void deleteClient(UUID uuid);
 
     List<ClientDto> getClientByNameOrAllClients(ClientSearchDto clientDto);
-
-    void postOperation(Client client);
 }

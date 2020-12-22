@@ -10,11 +10,11 @@ import java.util.concurrent.Executor;
 
 @Component
 @ComponentScan("ru.isf.mortgage")
-//@EnableAsync
+@EnableAsync
 public class SpringConfig {
-//
-//    @Bean(name = "threadPoolTaskExecutor")
-//    public Executor threadPoolTaskExecutor() {
-//        return new ThreadPoolTaskExecutor();
-//    }
+
+    @Bean(name = "threadPoolTaskExecutor")
+    public Executor threadPoolTaskExecutor() {
+        return new ThreadPoolTaskExecutor();
+    }
 }
