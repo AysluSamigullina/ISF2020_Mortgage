@@ -2,6 +2,7 @@ package ru.isf.mortgage.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.isf.mortgage.controller.dto.RequestDto;
 import ru.isf.mortgage.entity.Client;
@@ -22,10 +23,15 @@ public class RequestRestServiceImpl implements RequestRestService {
     private static final Logger logger = LogManager.getLogger(RequestRestServiceImpl.class.getName());
     private RequestDao requestDao;
     private ClientDao clientDao;
+    private RequestDtoValidator requestDtoValidator;
 
-    public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao) {
+    @Value("${request.maxTerm}")
+    private String maxTerm;
+
+    public RequestRestServiceImpl(RequestDao requestDao, ClientDao clientDao, RequestDtoValidator requestDtoValidator) {
         this.requestDao = requestDao;
         this.clientDao = clientDao;
+        this.requestDtoValidator = requestDtoValidator;
     }
 
     /**
@@ -39,6 +45,7 @@ public class RequestRestServiceImpl implements RequestRestService {
     @Override
     public RequestDto addRequest(RequestDto requestDto) {
         logger.debug("add request");
+        requestDtoValidator.validate(requestDto);
         Request request = new Request(requestDto.getSum(), requestDto.getTerm());
         Client client = clientDao.getClientByFullName(requestDto.getClientFullName());
         if (client == null) {
