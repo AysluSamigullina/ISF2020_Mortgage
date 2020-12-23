@@ -58,7 +58,6 @@ public class RequestRestServiceImpl implements RequestRestService {
         requestDto.setClientId(client.getId());
         requestDto.setStatus(request.getStatus().toString());
         return requestDto;
-
     }
 
     /**
@@ -107,6 +106,7 @@ public class RequestRestServiceImpl implements RequestRestService {
      */
     @Override
     public void deleteRequest(UUID id) {
+        logger.debug("delete request");
         requestDao.delete(id);
     }
 }

@@ -15,13 +15,13 @@ public interface ClientDao {
      * Добавляет клиента в список
      * @param client
      */
-    void add(Client client);
+    Client add(Client client);
 
     /**
      * Удаляет клиента из списка
-     * @param client
+     * @param uuid
      */
-    void delete(Client client);
+    void delete(UUID uuid);
 
     /**
      * Выводит список клиентов

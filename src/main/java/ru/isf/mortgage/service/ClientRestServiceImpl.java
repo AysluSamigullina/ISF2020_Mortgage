@@ -73,8 +73,7 @@ public class ClientRestServiceImpl implements ClientRestService {
     @Override
     public void deleteClient(UUID uuid) {
         logger.debug("delete client");
-        Client client = clientDao.getClientById(uuid);
-        clientDao.delete(client);
+        clientDao.delete(uuid);
     }
 
     /**
